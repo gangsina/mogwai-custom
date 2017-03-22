@@ -110,6 +110,8 @@ public class ERDesignerGraphUI extends BasicGraphUI {
         move_editorpane move ;
 
         int mouseButton = 1;
+
+        int moving = -1; //用于标记是否处于移动状态.  1 是否, -1否.
         /**
          * 滚轮事件,处理编辑界面的大小滚动.
          * @param e  滚动事件
@@ -137,8 +139,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                     JScrollPane scrollPane = (JScrollPane) graph.getParent().getParent();
                     JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
                     JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
-                    logger.info("ctrl and mouse pressed point --> horizontalScrollBar {}, verticalScrollBar {}",horizontalScrollBar.getValue(),verticalScrollBar.getValue());
-                    move = new MoveEditorPaneImpl(horizontalScrollBar.getValue(), verticalScrollBar.getValue(),e.getPoint());
+                    move = new MoveEditorPaneImpl(horizontalScrollBar.getValue(), verticalScrollBar.getValue(),e.getLocationOnScreen());
                 }
 
                 return;
@@ -199,13 +200,30 @@ public class ERDesignerGraphUI extends BasicGraphUI {
 
         @Override
         public void mouseDragged(MouseEvent e) {
-            super.mouseDragged(e);
+            /*当发现ctrl 和 鼠标左键都处于按下状态 ,则使用新的逻辑.  否则 使用原来的代码.*/
+            if (e.isControlDown() && mouseButton == MouseEvent.BUTTON1
+                    &&  graph.getParent() instanceof JViewport) {
+                if (move == null) { //如果在鼠标按下时, 初始化失败. 则不做处理.
+                    return;
+                }
+                if(moving==1)return;
 
-            ERDesignerGraph theGraph = (ERDesignerGraph) graph;
-            theGraph.setDragging(true);
+                try {
+                    moving = 1;
+                    move.moveOrNot(e.getLocationOnScreen(), graph);
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }finally {
+                    moving = -1;
+                }
+            }else{
+                super.mouseDragged(e);
+                ERDesignerGraph theGraph = (ERDesignerGraph) graph;
+                theGraph.setDragging(true);
 
-            if (e.isAltDown()) {
-                theGraph.setDraggingCtrlView(true);
+                if (e.isAltDown()) {
+                    theGraph.setDraggingCtrlView(true);
+                }
             }
         }
 
@@ -220,11 +238,11 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                 theGraph.setDraggingCtrlView(false);
             }
 
-            if (e.isControlDown()
-                    && mouseButton == MouseEvent.BUTTON1
-                    &&  graph.getParent() instanceof JViewport) {
-                move.moveOrNot(e.getPoint(),graph);
-            }
+//            if (e.isControlDown()
+//                    && mouseButton == MouseEvent.BUTTON1
+//                    &&  graph.getParent() instanceof JViewport) {
+//                move.moveOrNot(e.getPoint(),graph);
+//            }
 
             move = null;
         }

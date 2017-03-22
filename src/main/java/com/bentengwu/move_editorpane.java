@@ -33,6 +33,14 @@ public interface move_editorpane extends base_intf {
     public int findScrollY(Object obj);
 
     /**
+     * 设置当前横竖滚动轴的位置.
+     * @param x
+     * @param y
+     * @return 1 成功  -1 失败.
+     */
+    public int setScrollXY(int x, int y);
+
+    /**
      * @param x 当ctrl处于按下状态时, 按下鼠标左键的X位置(相对于画布)
      * @param y 当ctrl处于按下状态时, 按下鼠标左键的Y位置(相对于画布)
      * @return 1 SUCESS -1 FAILED

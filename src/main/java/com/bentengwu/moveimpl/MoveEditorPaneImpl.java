@@ -24,6 +24,8 @@ public class MoveEditorPaneImpl implements move_editorpane {
     static int scrollX =0; //当ctrl处于按下状态时, 按下鼠标左键; 水平滚动抽的value值
     static int scrollY =0; //当ctrl处于按下状态时, 按下鼠标左键; 垂直滚动抽的VALUE值.
 
+    static final  int scrollStepLen = 60;
+
     public MoveEditorPaneImpl( int scrollX_, int scrollY_,Point mousePoint) {
         scrollX = scrollX_;
         scrollY = scrollY_;
@@ -49,24 +51,36 @@ public class MoveEditorPaneImpl implements move_editorpane {
         if (obj[0] instanceof Point) {
             Point point = (Point) obj[0];
             setMXY(point.x, point.y);
-        }else{
-            throw  new RuntimeException("Not right Class");
+        } else {
+            throw new RuntimeException("Not right Class");
         }
 
         JGraph jGraph = null;
         if (obj[1] instanceof JGraph) {
-             jGraph = (JGraph) obj[1];
-        }else{
-            throw  new RuntimeException("Not right Class");
+            jGraph = (JGraph) obj[1];
+        } else {
+            throw new RuntimeException("Not right Class");
         }
 
         if (jGraph.getParent() instanceof JViewport) {
             JScrollPane scrollPane = (JScrollPane) jGraph.getParent().getParent();
             JScrollBar verticalScrollBar = scrollPane.getVerticalScrollBar();
             JScrollBar horizontalScrollBar = scrollPane.getHorizontalScrollBar();
-            horizontalScrollBar.setValue(scrollX + mpx - mx);
-            verticalScrollBar.setValue(scrollY + mpy - my);
-        }else{
+
+//            logger.info("x: {} -->{}, y: {} -->{}",scrollX,scrollX + mpx - mx,scrollY,scrollY + mpy - my);
+//            logger.info("({},{})", mx, my);
+
+            scrollX = scrollX + mpx - mx < 0 ? 0 : scrollX + mpx - mx;
+            scrollY = scrollY + mpy - my < 0 ? 0 : scrollY + mpy - my;
+
+//            moveByStep(jGraph, horizontalScrollBar, verticalScrollBar, scrollX, scrollY);
+            horizontalScrollBar.setValue(scrollX);
+            verticalScrollBar.setValue(scrollY);
+
+            mpx = mx;
+            mpy = my;
+
+        } else {
             logger.info("Not support move yet! ");
         }
     }
@@ -87,6 +101,21 @@ public class MoveEditorPaneImpl implements move_editorpane {
     @Override
     public int findScrollY(Object obj) {
         return this.scrollY;
+    }
+
+
+    /**
+     * 设置当前横竖滚动轴的位置.
+     *
+     * @param x
+     * @param y
+     * @return 1 成功  -1 失败.
+     */
+    @Override
+    public int setScrollXY(int x, int y) {
+         scrollX = x;
+        scrollY = y;
+        return 1;
     }
 
     /**
@@ -111,6 +140,41 @@ public class MoveEditorPaneImpl implements move_editorpane {
         mx = x;
         my = y;
         return 1;
+    }
+
+    /**
+     * 滚动效果不理想,尝试将滚动按照步长来滚动.
+     * @param horizontal 水平轴
+     * @param vertical 垂直抽
+     * @param horizontalEnd 水平轴滚动的终点
+     * @param verticalEnd  The vertical scroll end position.
+     */
+    public void moveByStep(JGraph jGraph, JScrollBar horizontal, JScrollBar vertical,  int horizontalEnd,
+                            int verticalEnd) {
+        int oldH = horizontal.getValue();
+        int oldV = vertical.getValue();
+        logger.info("20170322: move by step : ({},{}),({},{})", oldH, oldV, horizontalEnd, verticalEnd);
+
+        if ( Math.abs(oldH - horizontalEnd) < scrollStepLen
+                && Math.abs(oldV - verticalEnd) < scrollStepLen) {
+            horizontal.setValue(horizontalEnd);
+            vertical.setValue(verticalEnd);
+            return;
+        }else {
+            //move one step;
+            int newH = oldH<horizontalEnd?oldH+scrollStepLen : oldH - scrollStepLen;
+            newH = newH<0?0:newH;
+
+            int newV = oldV<verticalEnd?oldV + scrollStepLen : oldV-scrollStepLen;
+            newV = newV<0?0:newV;
+
+            horizontal.setValue(newH);
+            vertical.setValue(newV);
+
+            jGraph.repaint();
+            moveByStep(jGraph,horizontal,vertical,horizontalEnd,verticalEnd);
+        }
+
     }
 
 
