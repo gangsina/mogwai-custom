@@ -1,0 +1,7 @@
+2017/3/21 
+1:优化操作. 按住ctrl后,可以鼠标拖动启动画布
+2:处理界面,剪辑表的那个界面被我调大. 并且可以通过view-config.properties文件中的 
+TABLE_EDITOR_VIEW_WIDTH=1100
+TABLE_EDITOR_VIEW_HEIGHT=600
+修改界面大小. 目前修改配置后,需要关闭重启才能生效.
+3:原先的代码微调.

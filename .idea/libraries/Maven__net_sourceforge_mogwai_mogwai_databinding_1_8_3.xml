@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: net.sourceforge.mogwai:mogwai-databinding:1.8.3">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/mogwai/mogwai-databinding/1.8.3/mogwai-databinding-1.8.3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/mogwai/mogwai-databinding/1.8.3/mogwai-databinding-1.8.3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/sourceforge/mogwai/mogwai-databinding/1.8.3/mogwai-databinding-1.8.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

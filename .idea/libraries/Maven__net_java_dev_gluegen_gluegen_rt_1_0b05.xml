@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: net.java.dev.gluegen:gluegen-rt:1.0b05">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt/1.0b05/gluegen-rt-1.0b05.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt/1.0b05/gluegen-rt-1.0b05-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/net/java/dev/gluegen/gluegen-rt/1.0b05/gluegen-rt-1.0b05-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

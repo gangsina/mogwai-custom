@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//src/main/java=ISO8859-1
+encoding//src/main/java/de/erdesignerng/dialect/DialectFactory.java=UTF-8
+encoding//src/main/java/de/erdesignerng/visual/ERDesigner.java=UTF-8
+encoding//src/main/java/de/erdesignerng/visual/common/OpenFromFileCommand.java=UTF-8
+encoding//src/main/java/de/erdesignerng/visual/jgraph/JGraphEditor.java=UTF-8
+encoding//src/main/resources=ISO8859-1
+encoding//src/test/java=ISO8859-1
+encoding//src/test/resources=ISO8859-1
+encoding/<project>=UTF-8

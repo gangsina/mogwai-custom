@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/mogwai-erdesignerng.iml" filepath="$PROJECT_DIR$/mogwai-erdesignerng.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../MogwaiERDesignerRedis/mogwai-erdesignerng-redis.iml" filepath="$PROJECT_DIR$/../MogwaiERDesignerRedis/mogwai-erdesignerng-redis.iml" />
+    </modules>
+  </component>
+</project>
