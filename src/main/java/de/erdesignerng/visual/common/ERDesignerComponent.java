@@ -17,6 +17,7 @@
  */
 package de.erdesignerng.visual.common;
 
+import com.bentengwu.config.MogwaiProperties;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.*;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
@@ -226,7 +227,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         setEditor(new Java2DEditor() {
             @Override
             protected void componentClicked(EditorPanel.EditorComponent aComponent, MouseEvent aEvent) {
-                logger.info("call setEditor2DInteractive-->setEditor-->Java2DEditor-->componentClicked {} {}",aComponent.userObject,aEvent.getButton());
+                logger.info("call setEditor2DInteractive-->setEditor-->Java2DEditor-->componentClicked {} {}", aComponent.userObject, aEvent.getButton());
                 if (!SwingUtilities.isRightMouseButton(aEvent)) {
                     if (aEvent.getClickCount() == 1) {
                         OutlineComponent.getDefault().setSelectedItem((ModelItem) aComponent.userObject);
@@ -631,6 +632,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         theViewMenu.add(theViewModeMenu);
         UIInitializer.getInstance().initialize(theViewModeMenu);
 
+
         displayCommentsAction = new DefaultAction(
                 e -> {
                     DefaultCheckboxMenuItem theItem = (DefaultCheckboxMenuItem) e
@@ -640,6 +642,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
         displayCommentsMenuItem = new DefaultCheckboxMenuItem(
                 displayCommentsAction);
+
         displayCommentsMenuItem.setSelected(false);
         theViewMenu.add(displayCommentsMenuItem);
 
@@ -1158,6 +1161,22 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
     }
 
     /**
+     * 其他自定义新增的初始化显示.
+     */
+    public final void initViewExt() {
+        int displayCommentMenuItemSelected = 1; // 1 selected -1 unselected when init
+        try {
+            displayCommentMenuItemSelected = MogwaiProperties.getInt("DISPLAYCOMMENTS_DISPLAY");
+        } catch (Exception ex) {
+            logger.error(ex.getMessage(),ex);
+        }
+
+        logger.info("20170328##The comment view:?{}",displayCommentMenuItemSelected==1);
+        displayCommentsMenuItem.setSelected(displayCommentMenuItemSelected==1);
+        editor.commandSetDisplayCommentsState(displayCommentMenuItemSelected==1);
+    }
+
+    /**
      * 通过打开文件的方式加载 *.mxm文件
      * @param aFile model文件
      */
@@ -1181,7 +1200,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
             getWorldConnector().setStatusText(
                     getResourceHelper().getText(
                             ERDesignerBundle.FILELOADED));
-
+            initViewExt();
         } catch (Exception e) {
 
             MessagesHelper.displayErrorMessage(getDetailComponent(), getResourceHelper().getText(
