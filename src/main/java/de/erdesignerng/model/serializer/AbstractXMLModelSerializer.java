@@ -140,7 +140,9 @@ public abstract class AbstractXMLModelSerializer extends CommonAbstractXMLSerial
         validator.validate(new DOMSource(aDocument));
 
         if (theExceptions.size() > 0) {
-            throw new IOException("Failed to validate document against schema", theExceptions.get(0));
+//            throw new IOException("Failed to validate document against schema", theExceptions.get(0));
+            System.out.println("Failed to validate document against schema");
+            System.out.println(theExceptions.get(0));
         }
 
         return deserialize(aDocument);

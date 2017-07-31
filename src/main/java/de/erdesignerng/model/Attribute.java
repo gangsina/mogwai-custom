@@ -268,12 +268,17 @@ public class Attribute<T extends ModelItem> extends OwnedModelItem<T> implements
 
     public String getPhysicalDeclaration() {
         synchronized (this) {
-            return datatype.createTypeDefinitionFor(this);
+            try {
+                return datatype.createTypeDefinitionFor(this);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return "Unknow";
+            }
         }
     }
 
     public String getLogicalDeclaration() {
-        if (datatype.isDomain()) {
+        if (datatype!=null && datatype.isDomain()) {
             return datatype.getName();
         }
         return getPhysicalDeclaration();

@@ -670,15 +670,18 @@ public abstract class JDBCReverseEngineeringStrategy<T extends Dialect> {
 
 				IndexExpression theExpression = thePrimaryKey.getExpressions().findByAttributeName(thePKColumnName);
 				if (theExpression == null) {
-					throw new RuntimeException("Cannot find attribute " + thePKColumnName + " in primary key for table " + theNewRelation.getExportingTable().getName());
+					System.out.println("Cannot find attribute " + thePKColumnName + " in primary key for table " + theNewRelation.getExportingTable().getName());
+//					throw new RuntimeException("Cannot find attribute " + thePKColumnName + " in primary key for table " + theNewRelation.getExportingTable().getName());
+				} else{
+
+					Attribute<Table> theImportingAttribute = theNewRelation.getImportingTable().getAttributes().findByName(theFKColumnName);
+					if (theImportingAttribute == null) {
+						throw new ReverseEngineeringException("Cannot find column " + theFKColumnName + " in table " + theNewRelation.getImportingTable().getName());
+					}
+
+					theNewRelation.getMapping().put(theExpression, theImportingAttribute);
 				}
 
-				Attribute<Table> theImportingAttribute = theNewRelation.getImportingTable().getAttributes().findByName(theFKColumnName);
-				if (theImportingAttribute == null) {
-					throw new ReverseEngineeringException("Cannot find column " + theFKColumnName + " in table " + theNewRelation.getImportingTable().getName());
-				}
-
-				theNewRelation.getMapping().put(theExpression, theImportingAttribute);
 			}
 		}
 

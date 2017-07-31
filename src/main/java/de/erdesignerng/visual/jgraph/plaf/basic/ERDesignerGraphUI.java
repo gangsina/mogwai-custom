@@ -45,6 +45,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
+import javax.swing.text.Keymap;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Point2D;
@@ -256,6 +257,7 @@ public class ERDesignerGraphUI extends BasicGraphUI {
             lastFocus = focus;
             focus = (focus != null && focus.intersects(graph, theRectangle)) ? focus : null;
             cell = graph.getNextSelectableViewAt(focus, e.getX(), e.getY());
+
             if ((cell != null) && (cell.getChildViews() != null) && (cell.getChildViews().length > 0)) {
                 CellView theTemp = graph.getNextViewAt(cell.getChildViews(), focus, e.getX(), e.getY());
                 if (theTemp != null) {
@@ -324,6 +326,8 @@ public class ERDesignerGraphUI extends BasicGraphUI {
                     }
                 }
             }
+
+            logger.info("The focus cell is : {}",focus.getCell());
         }
 
         @Override

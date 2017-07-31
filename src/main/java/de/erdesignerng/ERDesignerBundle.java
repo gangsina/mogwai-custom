@@ -912,4 +912,6 @@ public interface ERDesignerBundle {
 	/** \u0045\u0064\u0069\u0074\u0020\u0043\u006f\u006d\u006d\u0065\u006e\u0074. */
 	String EDITCOMMENT = "EDITCOMMENT";
 
+	/** 这个用于绑定查看类 富文本注释 */
+	String EDITCOMMENT_EXT = "EDITCOMMENT_EXT";
 }

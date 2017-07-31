@@ -50,6 +50,10 @@
             <id>java-net-repository</id>
             <url>http://download.java.net/maven/2</url>
         </repository>
+        <repository>
+            <id>thirdparty</id>
+            <url>http://192.168.2.253:3030/nexus/content/repositories/thirdparty</url>
+        </repository>
     </repositories>
     <build>
         <defaultGoal>package</defaultGoal>
@@ -306,6 +310,17 @@
             </plugin>
         </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
     <dependencies>
 
@@ -533,6 +548,31 @@
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bentengwu</groupId>
+            <artifactId>swinglib</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bentengwu.xdoc</groupId>
+            <artifactId>third_xcode</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bentengwu.rsyntax</groupId>
+            <artifactId>third_rsyntax</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bentengwu.poi</groupId>
+            <artifactId>third_poi</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bentengwu.jfreechart</groupId>
+            <artifactId>third_jfreechart</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
     <properties>

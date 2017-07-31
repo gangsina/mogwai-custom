@@ -27,6 +27,7 @@ import de.erdesignerng.model.Model;
 import de.erdesignerng.model.ModelIOUtilities;
 import de.erdesignerng.modificationtracker.HistoryModificationTracker;
 import de.erdesignerng.util.ApplicationPreferences;
+import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
 import java.io.File;
@@ -75,17 +76,30 @@ public class SaveToFileCommand extends UICommand {
     private void executeSaveToFile(File aFile) {
 
         ERDesignerComponent component = ERDesignerComponent.getDefault();
-        DateFormat theFormat = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        DateFormat theFormat = new SimpleDateFormat("yyyy-MM-dd_HHmmss");
         Date theNow = new Date();
 
         PrintWriter theWriter = null;
         try {
-
             Model theModel = component.getModel();
 
             if (aFile.exists()) {
-                File theBakFile = new File(aFile.toString() + "_"
-                        + theFormat.format(theNow));
+
+                String suffixAFile = StringUtils.substringAfter(aFile.getName(), ".");
+                String prefixAFile = StringUtils.substringBefore(aFile.getName(),".");
+                /**
+                 * 修改原先的备份路径. 将备份临时文件存放到backup中.
+                 */
+                File backupFileDirectory = new File(aFile.getParent()+File.separator + "backup");
+                if(!backupFileDirectory.exists()){
+                    backupFileDirectory.mkdirs();
+                }
+
+                String backupFilePath = backupFileDirectory.getAbsolutePath()+File.separator+ prefixAFile + "_"
+                        + theFormat.format(theNow)+suffixAFile;
+
+                File theBakFile = new File(backupFilePath);
+                logger.warn("Backup to file -->{}",backupFilePath);
                 aFile.renameTo(theBakFile);
             }
 
