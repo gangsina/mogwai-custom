@@ -18,6 +18,7 @@
 package de.erdesignerng.visual.common;
 
 import com.bentengwu.config.MogwaiProperties;
+import com.bentengwu.mogwaidemosupport.EditorView;
 import de.erdesignerng.ERDesignerBundle;
 import de.erdesignerng.model.*;
 import de.erdesignerng.model.serializer.repository.RepositoryEntryDescriptor;
@@ -508,6 +509,7 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         theFileMenu.add(theSaveItem);
         KeyStroke theStroke = (KeyStroke) theSaveAction
                 .getValue(DefaultAction.HOTKEY_KEY);
+        logger.info("The stroke is -->{}",theStroke);
         if (theStroke != null) {
             theSaveItem.setAccelerator(theStroke);
             getDetailComponent().registerKeyboardAction(theSaveAction, theStroke,
@@ -516,6 +518,9 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
         theFileMenu.add(new DefaultMenuItem(theSaveAsAction));
         theFileMenu.add(new DefaultMenuItem(theLoadAction));
+
+
+
 
         if (worldConnector.supportsRepositories()) {
             theFileMenu.addSeparator();
@@ -706,6 +711,9 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         DefaultRadioButtonMenuItem theDescendingItem = new DefaultRadioButtonMenuItem(
                 theDisplayDescendingOrderAction);
 
+
+
+
         ButtonGroup theDisplayOrderGroup = new ButtonGroup();
         theDisplayOrderGroup.add(displayNaturalOrderMenuItem);
         theDisplayOrderGroup.add(theAscendingItem);
@@ -747,6 +755,16 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         zoomBox.setMaximumSize(new Dimension(100, 21));
         zoomBox.setAction(theZoomAction);
         zoomBox.setModel(theZoomModel);
+
+
+        /**
+         * 使用alt+1 来打开富文本编辑.
+         */
+        DefaultAction viewRichTextMemoAction = new DefaultAction(new TableRichTextViewAction(), this, ERDesignerBundle.EDITCOMMENT_EXT);
+        viewRichTextMemoAction.putValue(DefaultAction.HOTKEY_KEY+"_alt+1", KeyStroke
+                .getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_DOWN_MASK));
+        KeyStroke alt1Stroke = (KeyStroke) viewRichTextMemoAction.getValue(DefaultAction.HOTKEY_KEY + "_alt+1");
+        getDetailComponent().registerKeyboardAction(viewRichTextMemoAction,alt1Stroke,JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         DefaultToolbar theToolBar = worldConnector.getToolBar();
 
@@ -1120,6 +1138,13 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         editor.setSelectedObject(aObject);
     }
 
+    /**
+     * @return 返回被选择的对象.
+     */
+    public ModelItem getSelectedObject() {
+        return selectedObject;
+    }
+
     public void refreshPreferences() {
         editor.refreshPreferences();
     }
@@ -1162,8 +1187,10 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
 
     /**
      * 其他自定义新增的初始化显示.
+     *
      */
     public final void initViewExt() {
+        /**-----------------打开默认显示表的字段注释----------------**/
         int displayCommentMenuItemSelected = 1; // 1 selected -1 unselected when init
         try {
             displayCommentMenuItemSelected = MogwaiProperties.getInt("DISPLAYCOMMENTS_DISPLAY");
@@ -1174,6 +1201,10 @@ public final class ERDesignerComponent implements ResourceHelperProvider {
         logger.info("20170328##The comment view:?{}",displayCommentMenuItemSelected==1);
         displayCommentsMenuItem.setSelected(displayCommentMenuItemSelected==1);
         editor.commandSetDisplayCommentsState(displayCommentMenuItemSelected==1);
+
+
+        /***------------表的富文本弹出框的标题初始化---------------*/
+        EditorView.getEditorView().setTitle("业务模型介绍");
     }
 
     /**

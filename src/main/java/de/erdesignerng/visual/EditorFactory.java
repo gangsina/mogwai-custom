@@ -24,14 +24,19 @@ import de.erdesignerng.visual.editor.relation.RelationEditor;
 import de.erdesignerng.visual.editor.subjectarea.SubjectAreaEditor;
 import de.erdesignerng.visual.editor.table.TableEditor;
 import de.erdesignerng.visual.editor.view.ViewEditor;
-import javax.swing.JComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
 
 public class EditorFactory {
+    protected final static Logger logger = LoggerFactory.getLogger(EditorFactory.class);
 
     private EditorFactory() {
     }
 
     public static BaseEditor createEditorFor(ModelItem aItem, JComponent aParent) {
+        logger.warn("Create Editor for {}",aItem);
         if (aItem instanceof Table) {
             Table theTable = (Table) aItem;
             TableEditor theEditor = new TableEditor(theTable.getOwner(), aParent);
